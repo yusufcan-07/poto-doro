@@ -38,80 +38,80 @@ class _ToDoPageState extends State<ToDoPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      backgroundColor: Color(0xff2f4569),
-      title: const Text(
-        'To-Do List',
-        style: TextStyle(fontSize: 24),
-      ),
-    ),
-    body: Center(
-      child: isLoading
-          ? const CircularProgressIndicator()
-          : todo.isEmpty
-          ? const Text(
-        'No To-Do',
-        style: TextStyle(color: Colors.white, fontSize: 24),
-      )
-          : buildToDo(),
-    ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: const Color(0xFFFF8A65),
-      child: const Icon(Icons.note_add),
-      onPressed: () async {
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-                backgroundColor: Colors.white,
-                title: Text(
-                  'To-Do List',
-                  style: TextStyle(
-                      color: Colors.red, fontWeight: FontWeight.bold),
-                ),
-                content: Stack(clipBehavior: Clip.none, children: <Widget>[
-                  Positioned(
-                    right: -40.0,
-                    top: -80.0,
-                    child: InkResponse(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: CircleAvatar(
-                        child: Icon(Icons.close),
-                        backgroundColor: Colors.red,
-                      ),
+        appBar: AppBar(
+          backgroundColor: Color(0xff2f4569),
+          title: const Text(
+            'To-Do List',
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+        body: Center(
+          child: isLoading
+              ? const CircularProgressIndicator()
+              : todo.isEmpty
+                  ? const Text(
+                      'No To-Do',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    )
+                  : buildToDo(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color(0xFFFF8A65),
+          child: const Icon(Icons.note_add),
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    backgroundColor: Colors.white,
+                    title: Text(
+                      'To-Do List',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  AddEditToDoPage()
-                ]));
+                    content: Stack(clipBehavior: Clip.none, children: <Widget>[
+                      Positioned(
+                        right: -40.0,
+                        top: -80.0,
+                        child: InkResponse(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: CircleAvatar(
+                            child: Icon(Icons.close),
+                            backgroundColor: Colors.red,
+                          ),
+                        ),
+                      ),
+                      AddEditToDoPage()
+                    ]));
+              },
+            );
+            refreshList();
           },
-        );
-        refreshList();
-      },
-    ),
-  );
-
-  Widget buildToDo() => ListView.builder(
-    padding: const EdgeInsets.all(8),
-    itemCount: todo.length,
-    itemBuilder: (context, index) {
-      final toDoItem = todo[index];
-      return GestureDetector(
-        onTap: () async {
-          await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NoteDetailPage(toDoId: toDoItem.id!),
-          ));
-
-          refreshList();
-        },
-        child: ToDoCardWidget(
-          note: toDoItem,
-          index: index,
         ),
       );
-    },
-  );
+
+  Widget buildToDo() => ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: todo.length,
+        itemBuilder: (context, index) {
+          final toDoItem = todo[index];
+          return GestureDetector(
+            onTap: () async {
+              await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => NoteDetailPage(toDoId: toDoItem.id!),
+              ));
+
+              refreshList();
+            },
+            child: ToDoCardWidget(
+              note: toDoItem,
+              index: index,
+            ),
+          );
+        },
+      );
 }
 
 class AddEditToDoPage extends StatefulWidget {
@@ -171,8 +171,6 @@ class _AddEditToDoPageState extends State<AddEditToDoPage> {
   }
 
   Widget buildButton() {
-    final isFormValid = title.isNotEmpty && description.isNotEmpty;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: ElevatedButton(
@@ -260,69 +258,60 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text("To Do List"),
-      actions: [
-        goButton(),
-        deleteButton(),
-      ],
-    ),
-    body: isLoading
-        ? const Center(
-      child: CircularProgressIndicator(),
-    )
-        : Padding(
-      padding: const EdgeInsets.all(12),
-      child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        children: [
-          Text(
-            note.title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            note.description,
-            style:
-            const TextStyle(color: Colors.black45, fontSize: 18),
-          )
-        ],
-      ),
-    ),
-  );
+        appBar: AppBar(
+          title: const Text("To Do List"),
+          actions: [
+            goButton(),
+            deleteButton(),
+          ],
+        ),
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(12),
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  children: [
+                    Text(
+                      note.title,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      note.description,
+                      style:
+                          const TextStyle(color: Colors.black45, fontSize: 18),
+                    )
+                  ],
+                ),
+              ),
+      );
 
   Widget deleteButton() => IconButton(
-    icon: const Icon(Icons.delete),
-    onPressed: () async {
-      await ToDoDatabase.instance.delete(widget.toDoId);
+        icon: const Icon(Icons.delete),
+        onPressed: () async {
+          await ToDoDatabase.instance.delete(widget.toDoId);
 
-      Navigator.of(context).pop();
-    },
-  );
+          Navigator.of(context).pop();
+        },
+      );
 
   Widget goButton() => IconButton(
-    icon: const Icon(Icons.play_circle),
-    onPressed: () async {
-
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              MyHomePage( todo: note,)));
-    },
-  );
+        icon: const Icon(Icons.play_circle),
+        onPressed: () async {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => MyHomePage(
+                    todo: note,
+                  )));
+        },
+      );
 }
-
-final _lightColors = [
-  Colors.amber.shade300,
-  Colors.lightGreen.shade300,
-  Colors.lightBlue.shade300,
-  Colors.orange.shade300,
-  Colors.pinkAccent.shade100,
-  Colors.tealAccent.shade100
-];
 
 class ToDoCardWidget extends StatefulWidget {
   const ToDoCardWidget({
@@ -340,9 +329,8 @@ class ToDoCardWidget extends StatefulWidget {
 
 class _ToDoCardWidgetState extends State<ToDoCardWidget> {
   @override
-
   Future updateNote(int? num) async {
-    final note = widget.note!.copy(
+    final note = widget.note.copy(
       isImportant: false,
       number: num,
       title: widget.note.title,
@@ -354,8 +342,7 @@ class _ToDoCardWidgetState extends State<ToDoCardWidget> {
 
   Widget build(BuildContext context) {
     var isChecked = false;
-    if(widget.note.number == 1) {
-
+    if (widget.note.number == 1) {
       isChecked = true;
     }
     print("${widget.note.title} =  $isChecked, ${widget.note.number}");
@@ -367,30 +354,28 @@ class _ToDoCardWidgetState extends State<ToDoCardWidget> {
           child: ListTile(
             title: Text(widget.note.title),
             subtitle: Text(widget.note.description),
-
           ),
         ),
         Checkbox(
           value: isChecked,
-          onChanged: (value) { // This is where we update the state when the checkbox is tapped
-            setState(()  {
+          onChanged: (value) {
+            // This is where we update the state when the checkbox is tapped
+            setState(() {
               {
-
-
-
-                if(value!) {
+                if (value!) {
                   widget.note.number = 1;
-                }
-                else {
+                } else {
                   widget.note.number = 0;
                 }
 
                 updateNote(widget.note.number);
 
                 print("second: ${widget.note.number}");
-              }});
+              }
+            });
           },
-        ),  ],
+        ),
+      ],
     );
   }
 
@@ -434,50 +419,50 @@ class NoteFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        buildTitle(),
-        const SizedBox(height: 8),
-        buildDescription(),
-        const SizedBox(height: 16),
-      ],
-    ),
-  );
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildTitle(),
+            const SizedBox(height: 8),
+            buildDescription(),
+            const SizedBox(height: 16),
+          ],
+        ),
+      );
 
   Widget buildTitle() => TextFormField(
-    maxLines: 1,
-    initialValue: title,
-    style: const TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    ),
-    decoration: const InputDecoration(
-      labelText: "Enter the Course Name",
-      icon: Icon(Icons.local_activity_sharp),
-    ),
-    validator: (title) =>
-    title != null && title.isEmpty ? 'The title cannot be empty' : null,
-    onChanged: onChangedTitle,
-  );
+        maxLines: 1,
+        initialValue: title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+        decoration: const InputDecoration(
+          labelText: "Enter the Course Name",
+          icon: Icon(Icons.local_activity_sharp),
+        ),
+        validator: (title) =>
+            title != null && title.isEmpty ? 'The title cannot be empty' : null,
+        onChanged: onChangedTitle,
+      );
 
   Widget buildDescription() => TextFormField(
-    maxLines: 1,
-    style: const TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    ),
-    initialValue: description,
-    decoration: const InputDecoration(
-      labelText: "Enter the Session Amount",
-      icon: Icon(Icons.description),
-    ),
-    validator: (title) => title != null && title.isEmpty
-        ? 'The description cannot be empty'
-        : null,
-    onChanged: onChangedDescription,
-  );
+        maxLines: 1,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+        initialValue: description,
+        decoration: const InputDecoration(
+          labelText: "Enter the Session Amount",
+          icon: Icon(Icons.description),
+        ),
+        validator: (title) => title != null && title.isEmpty
+            ? 'The description cannot be empty'
+            : null,
+        onChanged: onChangedDescription,
+      );
 }
 
 const String tableToDo = 'todo';
@@ -499,7 +484,7 @@ class NoteFields {
 class ToDo {
   final int? id;
   late bool isImportant;
-    int? number;
+  int? number;
   final String title;
   final String description;
   final DateTime createdTime;
@@ -531,20 +516,20 @@ class ToDo {
       );
 
   static ToDo fromJson(Map<String, Object?> json) => ToDo(
-    id: json[NoteFields.id] as int?,
-    isImportant: json[NoteFields.isImportant] == 0,
-    number: json[NoteFields.number] as int?,
-    title: json[NoteFields.title] as String,
-    description: json[NoteFields.description] as String,
-    createdTime: DateTime.parse(json[NoteFields.time] as String),
-  );
+        id: json[NoteFields.id] as int?,
+        isImportant: json[NoteFields.isImportant] == 0,
+        number: json[NoteFields.number] as int?,
+        title: json[NoteFields.title] as String,
+        description: json[NoteFields.description] as String,
+        createdTime: DateTime.parse(json[NoteFields.time] as String),
+      );
 
   Map<String, Object?> toJson() => {
-    NoteFields.id: id,
-    NoteFields.title: title,
-    NoteFields.isImportant: isImportant ? 1 : 0,
-    NoteFields.number: number,
-    NoteFields.description: description,
-    NoteFields.time: createdTime.toIso8601String(),
-  };
+        NoteFields.id: id,
+        NoteFields.title: title,
+        NoteFields.isImportant: isImportant ? 1 : 0,
+        NoteFields.number: number,
+        NoteFields.description: description,
+        NoteFields.time: createdTime.toIso8601String(),
+      };
 }
