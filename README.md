@@ -1,7 +1,6 @@
 # PoTO-DOro
 
 White noise when studying with focus
-
 Combination of studying techniques Pomodoro and TO-DO
 ## Getting Started
 
